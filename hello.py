@@ -2,24 +2,22 @@
 # coding: utf-8
 
 
+from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 class MainPage(webapp.RequestHandler):
-  def get(self, path):
-    self.response.headers['Content-Type'] = 'text/plain'
-    self.response.out.write("""
-Hello, webapp World!
-{outlist}
-path = {path}
-    """.format(
-            outlist="\n".join(["    " + e for e in dir(self.response)]),
-            path=repr(path),
-        )
-    )
+  def get(self):
+    user = users.get_current_user()
+
+    if user:
+      self.response.headers['Content-Type'] = 'text/plain'
+      self.response.out.write('Hello, ' + user.nickname())
+    else:
+      self.redirect(users.create_login_url(self.request.uri))
 
 application = webapp.WSGIApplication(
-                                     [('/(.*)', MainPage)],
+                                     [('/', MainPage)],
                                      debug=True)
 
 def main():
