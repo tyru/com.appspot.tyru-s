@@ -8,13 +8,13 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 class MainPage(webapp.RequestHandler):
   def get(self):
-    user = users.get_current_user()
-
-    if user:
-      self.response.headers['Content-Type'] = 'text/plain'
-      self.response.out.write('Hello, ' + user.nickname())
-    else:
-      self.redirect(users.create_login_url(self.request.uri))
+    self.response.out.write("""
+    <html>
+      <body>
+        hello.
+      </body>
+    </html>
+    """)
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage)],
