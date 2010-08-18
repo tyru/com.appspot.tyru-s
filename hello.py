@@ -5,16 +5,16 @@
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.ext.webapp import template
 
 class MainPage(webapp.RequestHandler):
-  def get(self):
-    self.response.out.write("""
-    <html>
-      <body>
-        hello.
-      </body>
-    </html>
-    """)
+    def get(self):
+        self.response.out.write(
+            template.render(
+                'template/index.html',
+                {'title': "ohayo-", 'name': "tyru"}
+            )
+        )
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage)],
